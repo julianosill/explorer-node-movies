@@ -55,5 +55,32 @@ export default class UserController {
     return res.status(200).json({ message: 'User has been updated.' })
   }
 
-  async delete(req, res) {}
+  async delete(req, res) {
+    const { id, password, confirmPassword } = req.body
+    const user = await database('users').where({ id }).first()
+
+    if (!user) {
+      throw new AppError('User not found.')
+    }
+
+    if (!password) {
+      throw new AppError('Password was not informed.')
+    }
+
+    if (password !== confirmPassword) {
+      throw new AppError('Password does not match.')
+    }
+
+    const checkPassword = await compare(password, user.password)
+
+    if (!checkPassword) {
+      throw new AppError('Password is incorrect.')
+    }
+
+    await database('users').where({ id }).delete()
+
+    return res
+      .status(201)
+      .json({ message: 'User has been removed successfully.' })
+  }
 }
