@@ -2,7 +2,7 @@ import AppError from '../utils/AppError.js'
 import { database } from '../database/knex/index.js'
 
 import pkgBcryptjs from 'bcryptjs'
-const { hash } = pkgBcryptjs
+const { hash, compare } = pkgBcryptjs
 
 export default class UserController {
   async create(req, res) {
@@ -22,7 +22,38 @@ export default class UserController {
       .json({ message: 'User has been created successfully.' })
   }
 
-  async update(req, res) {}
+  async update(req, res) {
+    const { id } = req.params
+    const { name, email, currentPassword, newPassword } = req.body
+    const user = await database('users').where({ id }).first()
+    const emailExists = await database('users').where({ email }).first()
+
+    if (!user) {
+      throw new AppError('User not found.')
+    }
+
+    if (emailExists && emailExists.id !== user.id) {
+      throw new AppError('E-mail is already registered.')
+    }
+
+    if (newPassword) {
+      if (!currentPassword) {
+        throw new AppError('Current password cannot be empty.')
+      }
+      const isCorrect = await compare(currentPassword, user.password)
+      if (!isCorrect) {
+        throw new AppError('Current password is incorrect.')
+      }
+      user.password = await hash(newPassword, 8)
+    }
+
+    user.name = name ?? user.name
+    user.email = email ?? user.email
+
+    await database('users').where({ id }).update(user)
+
+    return res.status(200).json({ message: 'User has been updated.' })
+  }
 
   async delete(req, res) {}
 }
