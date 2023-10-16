@@ -35,14 +35,24 @@ export default class NotesController {
     const note = await database('notes').where({ id }).first()
 
     if (!note) {
-      throw new AppError('Note not found.')
+      throw new AppError({ message: 'Note not found.' })
     }
 
     const tags = await database('tags').where({ note_id: id }).orderBy('name')
     return res.status(201).json({ ...note, tags })
   }
 
-  async delete(req, res) {}
+  async delete(req, res) {
+    const { id } = req.body
+    const note = await database('notes').where({ id }).first()
+
+    if (!note) {
+      throw new AppError('Note not found.')
+    }
+
+    await database('notes').where({ id }).delete()
+    return res.json({ message: 'Note has been removed successfully' })
+  }
 
   async index(req, res) {}
 }
