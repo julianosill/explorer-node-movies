@@ -22,4 +22,21 @@ export default class TagsController {
 
     return res.status(201).json(tagList)
   }
+
+  async show(req, res) {
+    const { name } = req.params
+    const movieTags = await database('tags').where({ name })
+    let tags = movieTags.map((tag) => tag.name)
+
+    if (tags.length <= 0) {
+      throw new AppError('Tag not found.')
+    }
+
+    const result = {
+      name: tags[0],
+      quantity: tags.length,
+    }
+
+    return res.status(201).json(result)
+  }
 }
