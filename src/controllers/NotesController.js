@@ -54,5 +54,58 @@ export default class NotesController {
     return res.json({ message: 'Note has been removed successfully' })
   }
 
-  async index(req, res) {}
+  async index(req, res) {
+    const { title, user_id, tags, order } = req.query
+    const movieTags = await database('tags').orderBy('name')
+    let notes = []
+
+    if (tags) {
+      const queryTags = tags.split(',').map((tag) => tag.trim())
+      notes = await database('tags')
+        .innerJoin('notes', 'notes.id', 'tags.note_id')
+        .whereIn('name', queryTags)
+        .modify(function (queryBuilder) {
+          if (user_id) {
+            queryBuilder.where({ 'notes.user_id': user_id })
+          }
+          if (title) {
+            queryBuilder.whereLike('notes.title', `%${title}%`)
+          }
+        })
+        .select([
+          'notes.id',
+          'notes.title',
+          'notes.description',
+          'notes.vote',
+          'notes.user_id',
+          'notes.created_at',
+          'notes.updated_at',
+        ])
+        .orderBy('notes.updated_at', order || 'desc')
+    } else {
+      notes = await database('notes')
+        .modify(function (queryBuilder) {
+          if (user_id) {
+            queryBuilder.where({ user_id })
+          }
+          if (title) {
+            queryBuilder.whereLike('title', `%${title}%`)
+          }
+        })
+        .orderBy('updated_at', order || 'desc')
+    }
+
+    const notesWithTags = notes.map((note) => {
+      const noteTags = movieTags.filter((tag) => tag.note_id === note.id)
+      const tagNames = noteTags.map((tag) => tag.name)
+      return { ...note, tags: tagNames }
+    })
+    notes = notesWithTags
+
+    if (notes.length <= 0) {
+      throw new AppError('Notes not found.')
+    }
+
+    return res.status(201).json(notes)
+  }
 }
