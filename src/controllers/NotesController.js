@@ -30,7 +30,19 @@ export default class NotesController {
       .json({ message: 'Note has been added successfully.' })
   }
 
-  async update(req, res) {}
+  async show(req, res) {
+    const { id } = req.params
+    const note = await database('notes').where({ id }).first()
+
+    if (!note) {
+      throw new AppError('Note not found.')
+    }
+
+    const tags = await database('tags').where({ note_id: id }).orderBy('name')
+    return res.status(201).json({ ...note, tags })
+  }
 
   async delete(req, res) {}
+
+  async index(req, res) {}
 }
