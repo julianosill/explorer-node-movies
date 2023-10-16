@@ -4,11 +4,18 @@ import { database } from '../database/knex/index.js'
 import pkgBcryptjs from 'bcryptjs'
 const { hash, compare } = pkgBcryptjs
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+const isValidEmail = (email) => emailRegex.test(email)
+
 export default class UserController {
   async create(req, res) {
     const { name, email, password } = req.body
-    const emailExists = await database('users').where({ email }).first()
 
+    if (!isValidEmail(email)) {
+      throw new AppError('E-mail is invalid.')
+    }
+
+    const emailExists = await database('users').where({ email }).first()
     if (emailExists) {
       throw new AppError('E-mail is already registered.')
     }
@@ -30,6 +37,10 @@ export default class UserController {
 
     if (!user) {
       throw new AppError('User not found.')
+    }
+
+    if (email && !isValidEmail(email)) {
+      throw new AppError('E-mail is invalid.')
     }
 
     if (emailExists && emailExists.id !== user.id) {
