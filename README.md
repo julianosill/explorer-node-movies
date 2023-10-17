@@ -191,12 +191,8 @@ Retrieve a list of notes using the `/notes` endpoint with `GET` method.
 ]
 ```
 
-<sup>
-
 - `vote`: From 1 to 5;
 - `tags`: Array of strings.
-
-</sup>
 
 #### List Notes: query parameters
 
@@ -247,11 +243,7 @@ Get a specific note details providing note `id` as a parameter in the URL using 
 ]
 ```
 
-<sup>
-
 - `vote`: From 1 to 5.
-
-</sup>
 
 ### Add Note
 
@@ -271,12 +263,8 @@ To create and add a new note, send a `POST` request to `/notes` endpoint with th
 }
 ```
 
-<sup>
-
 - `vote`: Must be a number from 1 to 5;
 - `tags`: Must be an Array of string, with at least one.
-
-</sup>
 
 #### Returns:
 
@@ -348,11 +336,7 @@ Get details of a specific tag providing its `name` as a parameter in the URL usi
 ]
 ```
 
-<sup>
-
 - `quantity`: returns the number of notes with the tag.
-
-</sup>
 
 ## Errors
 
