@@ -43,7 +43,7 @@ export default class NotesController {
   }
 
   async delete(req, res) {
-    const { id } = req.body
+    const { id } = req.params
     const note = await database('notes').where({ id }).first()
 
     if (!note) {

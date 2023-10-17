@@ -7,6 +7,6 @@ const notesController = new NotesController()
 notesRoutes.get('/', notesController.index)
 notesRoutes.get('/:id', notesController.show)
 notesRoutes.post('/add', notesController.create)
-notesRoutes.delete('/delete', notesController.delete)
+notesRoutes.delete('/:id', notesController.delete)
 
 export default notesRoutes
