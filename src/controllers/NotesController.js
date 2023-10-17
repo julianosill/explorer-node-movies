@@ -51,7 +51,7 @@ export default class NotesController {
     }
 
     await database('notes').where({ id }).delete()
-    return res.json({ message: 'Note has been removed successfully' })
+    return res.json({ message: 'Note has been removed successfully.' })
   }
 
   async index(req, res) {
