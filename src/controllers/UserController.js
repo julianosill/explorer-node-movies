@@ -67,7 +67,8 @@ export default class UserController {
   }
 
   async delete(req, res) {
-    const { id, password, confirmPassword } = req.body
+    const { id } = req.params
+    const { password, confirmPassword } = req.body
     const user = await database('users').where({ id }).first()
 
     if (!user) {
