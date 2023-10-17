@@ -21,13 +21,13 @@
 
 Clone this repository using `git clone`:
 
-```properties
+```bash
 git clone https://github.com/julianosill/explorer-node-movies.git
 ```
 
 Go to the folder and install the dependencies:
 
-```properties
+```bash
 cd explorer-node-movies
 npm install
 ```
@@ -36,13 +36,13 @@ npm install
 
 Before running the application locally, you need to set up the database and tables using the following command:
 
-```properties
+```bash
 npm run migrate
 ```
 
 Afterward, start the server:
 
-```properties
+```bash
 npm run dev
 ```
 
@@ -63,9 +63,9 @@ To create a new user, send a request with JSON data as specified below:
 
 ```json
 {
-  "name": STRING,
-  "email": STRING,
-  "password": STRING
+  "name": "STRING",
+  "email": "STRING",
+  "password": "STRING"
 }
 ```
 
@@ -86,10 +86,10 @@ To update a user, provide the user `id` as a parameter in the URL. Changing the 
 
 ```json
 {
-  "name": STRING,
-  "email": STRING,
-  "currentPassword": STRING,
-  "newPassword": STRING
+  "name": "STRING",
+  "email": "STRING",
+  "currentPassword": "STRING",
+  "newPassword": "STRING"
 }
 ```
 
@@ -110,9 +110,9 @@ To delete a user, the `id`, `password`, and `confirmPassword` are mandatory.
 
 ```json
 {
-  "id": NUMBER,
-  "password": STRING,
-  "confirmPassword": STRING,
+  "id": "NUMBER",
+  "password": "STRING",
+  "confirmPassword": "STRING"
 }
 ```
 
@@ -135,11 +135,11 @@ To create and add a new note, send a request with the following JSON data:
 
 ```json
 {
-  "title": STRING,
-  "description": STRING,
-  "user_id": NUMBER,
-  "vote": NUMBER, // From 1 to 5
-  "tags": STRING[] // At least 1 element inside of Array
+  "title": "STRING",
+  "description": "STRING",
+  "user_id": "NUMBER",
+  "vote": "NUMBER", // From 1 to 5
+  "tags": "STRING[]" // At least 1 element inside of Array
 }
 ```
 
@@ -161,14 +161,14 @@ Retrieve a list of notes using the following endpoint:
 ```json
 [
   {
-    "id": NUMBER,
-    "title": STRING,
-    "description": STRING,
-    "vote": NUMBER, // From 1 to 5
-    "user_id": NUMBER,
-    "created_at": DATE,
-    "updated_at": DATE,
-    "tags": STRING[]
+    "id": "NUMBER",
+    "title": "STRING",
+    "description": "STRING",
+    "vote": "NUMBER", // From 1 to 5
+    "user_id": "NUMBER",
+    "created_at": "DATE",
+    "updated_at": "DATE",
+    "tags": "STRING"[]
   }
 ]
 ```
@@ -176,10 +176,10 @@ Retrieve a list of notes using the following endpoint:
 ##### Query parameters
 
 ```js
-  user_id: NUMBER,
+  user_id: "NUMBER",
   // Ex: http://localhost:3333/notes?user_id=1
 
-  title: STRING,
+  title: "STRING",
   // Can be full or partial word
   // Ex: http://localhost:3333/notes?title=godfather
 
@@ -204,19 +204,19 @@ Get a specific note providing note `id` as a parameter in the URL:
 ```json
 [
   {
-    "id": NUMBER,
-    "title": STRING,
-    "description": STRING,
-    "vote": NUMBER, // From 1 to 5
-    "user_id": NUMBER,
-    "created_at": DATE,
-    "updated_at": DATE,
+    "id": "NUMBER",
+    "title": "STRING",
+    "description": "STRING",
+    "vote": "NUMBER", // From 1 to 5
+    "user_id": "NUMBER",
+    "created_at": "DATE",
+    "updated_at": "DATE",
     "tags": [
       {
-        "id": NUMBER,
-        "name": STRING,
-        "note_id": NUMBER,
-        "user_id": NUMBER
+        "id": "NUMBER",
+        "name": "STRING",
+        "note_id": "NUMBER",
+        "user_id": "NUMBER"
       }
     ]
   }
@@ -233,7 +233,7 @@ To delete a note, provide the note `id` in the JSON payload.
 ##### JSON Payload:
 
 ```json
-{ "id": NUMBER }
+{ "id": "NUMBER" }
 ```
 
 ##### Returns:
