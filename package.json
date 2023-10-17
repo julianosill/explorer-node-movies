@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/server.js",
+    "dev": "knex migrate:latest && nodemon ./src/server.js",
     "migrate": "knex migrate:latest"
   },
   "keywords": [],
